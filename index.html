@@ -12,19 +12,10 @@
 <body>
     <header>
         <h1>Ví Thông Minh AI 🧠💡</h1>
-        <p>Quản lý chi tiêu dễ dàng, tiết kiệm thông minh cùng Trợ lý AI Gemini 1.5 Flash</p>
+        <p>Quản lý chi tiêu dễ dàng, tiết kiệm thông minh cùng Trợ lý AI</p>
     </header>
 
     <div id="notification" class="notification"></div>
-
-    <div class="api-key-container">
-        <label for="apiKey">Nhập Google AI Gemini API Key của bạn:</label>
-        <div class="api-input-group">
-            <input type="password" id="apiKey" placeholder="Dán API Key vào đây...">
-            <button id="saveApiKeyBtn">Lưu & Khởi tạo</button>
-        </div>
-        <p class="api-note">🔑 API Key của bạn chỉ được lưu trên trình duyệt này. Không an toàn cho môi trường production.</p>
-    </div>
 
     <main class="dashboard-grid">
         <!-- CỘT 1: NHẬP LIỆU & GIAO DỊCH -->
@@ -58,7 +49,7 @@
             <div id="dashboardSummary">
                 <p>Tổng chi tiêu: <strong id="totalSpent">0 VND</strong></p>
             </div>
-            <button id="analyzeBtn" disabled>Nhờ AI Phân Tích Ngay</button>
+            <button id="analyzeBtn">Nhờ AI Phân Tích Ngay</button>
             <div id="aiAnalysisResult" class="ai-result">
                 <p>Thêm vài giao dịch và nhấn nút trên để nhận phân tích và lời khuyên cá nhân hóa từ AI!</p>
             </div>
@@ -66,7 +57,7 @@
 
         <!-- CỘT 3: CÁC TÍNH NĂNG NÂNG CAO (DEMO) -->
         <section class="card">
-            <h2>Tính Năng Thông Minh (Demo)</h2>
+            <h2>Tính Năng Thông Minh (Sắp ra mắt)</h2>
             <div class="feature-list">
                 <div class="feature-item">
                     <h4>📸 Chụp & Nhập Liệu AI</h4>
@@ -81,22 +72,13 @@
                     <p>AI dự báo số dư tài khoản của bạn trong 30 ngày tới.</p>
                 </div>
                 <div class="feature-item">
-                    <h4>🤔 Mô Phỏng "Nếu... Thì Sao?"</h4>
-                    <p>Hỏi AI về tác động của các quyết định tài chính lớn.</p>
-                </div>
-                <div class="feature-item">
                     <h4>💸 Săn Deal Thông Minh</h4>
                     <p>AI tìm các gói dịch vụ tốt hơn để giúp bạn tiết kiệm.</p>
-                </div>
-                 <div class="feature-item">
-                    <h4>🎮 Thử Thách Tiết Kiệm AI</h4>
-                    <p>Nhận các thử thách tiết kiệm cá nhân hóa và vui vẻ.</p>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- Tải thư viện Gemini -->
-    <script type="module" src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
