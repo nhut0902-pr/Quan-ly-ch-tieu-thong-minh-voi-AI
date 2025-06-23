@@ -1,8 +1,6 @@
-import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
+// script.js
 
 // --- DOM ELEMENTS ---
-const apiKeyInput = document.getElementById('apiKey');
-const saveApiKeyBtn = document.getElementById('saveApiKeyBtn');
 const notificationEl = document.getElementById('notification');
 const transactionForm = document.getElementById('transactionForm');
 const amountInput = document.getElementById('amount');
@@ -14,9 +12,6 @@ const analyzeBtn = document.getElementById('analyzeBtn');
 const aiAnalysisResultEl = document.getElementById('aiAnalysisResult');
 
 // --- STATE MANAGEMENT ---
-let apiKey = '';
-let genAI;
-let model;
 let transactions = [];
 
 // --- FUNCTIONS ---
@@ -32,40 +27,6 @@ function showNotification(message, type = 'success') {
     setTimeout(() => {
         notificationEl.className = 'notification';
     }, 4000);
-}
-
-/**
- * Lưu API Key và khởi tạo model Gemini
- */
-async function initializeAi() {
-    apiKey = apiKeyInput.value.trim();
-    if (!apiKey) {
-        showNotification('Vui lòng nhập API Key của bạn.', 'error');
-        return;
-    }
-
-    try {
-        saveApiKeyBtn.textContent = 'Đang khởi tạo...';
-        saveApiKeyBtn.disabled = true;
-
-        genAI = new GoogleGenerativeAI(apiKey);
-        model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-        
-        // Thử một prompt nhỏ để xác thực key
-        await model.generateContent("hello");
-
-        localStorage.setItem('geminiApiKey', apiKey);
-        showNotification('API Key đã được lưu và khởi tạo thành công!', 'success');
-        analyzeBtn.disabled = false;
-
-    } catch (error) {
-        console.error("Lỗi khởi tạo AI:", error);
-        showNotification('Khởi tạo thất bại! Vui lòng kiểm tra lại API Key.', 'error');
-        analyzeBtn.disabled = true;
-    } finally {
-        saveApiKeyBtn.textContent = 'Lưu & Khởi tạo';
-        saveApiKeyBtn.disabled = false;
-    }
 }
 
 /**
@@ -93,7 +54,8 @@ function renderTransactions() {
     }
 
     totalSpentEl.textContent = `${totalSpent.toLocaleString('vi-VN')} VND`;
-    localStorage.setItem('transactions', JSON.stringify(transactions));
+    // Lưu vào localStorage để không mất dữ liệu khi tải lại trang
+    localStorage.setItem('transactions_v2', JSON.stringify(transactions));
 }
 
 /**
@@ -127,15 +89,11 @@ function addTransaction(e) {
 }
 
 /**
- * Gửi dữ liệu đến Gemini và nhận phân tích
+ * Gửi dữ liệu đến Netlify Function để nhận phân tích
  */
 async function analyzeSpending() {
-    if (!model) {
-        showNotification('AI chưa được khởi tạo. Vui lòng nhập API Key.', 'error');
-        return;
-    }
     if (transactions.length < 3) {
-        showNotification('Cần ít nhất 3 giao dịch để phân tích hiệu quả.', 'error');
+        showNotification('Cần ít nhất 3 giao dịch để AI phân tích hiệu quả.', 'error');
         return;
     }
 
@@ -143,29 +101,30 @@ async function analyzeSpending() {
     analyzeBtn.textContent = '🤖 AI đang phân tích...';
     aiAnalysisResultEl.innerHTML = '<p>Vui lòng chờ trong giây lát...</p>';
 
-    const prompt = `
-        Bạn là một chuyên gia tư vấn tài chính cá nhân tên là "Ví Thông Minh AI", giọng văn thân thiện, động viên và chuyên nghiệp.
-        Dựa trên danh sách chi tiêu của người dùng trong tháng vừa qua dưới đây (định dạng JSON), hãy thực hiện các yêu cầu sau:
-
-        1.  **Nhận xét tổng quan (2-3 dòng):** Đưa ra một nhận xét ngắn gọn về thói quen chi tiêu của họ.
-        2.  **Điểm sáng & Điểm cần lưu ý:** Chỉ ra 1-2 danh mục chi tiêu chiếm tỷ trọng cao nhất và một vài khoản chi bất thường (nếu có).
-        3.  **Lời khuyên Vàng (3 gạch đầu dòng):** Đưa ra 3 lời khuyên cụ thể, hữu ích và có thể hành động ngay để giúp họ tiết kiệm hiệu quả hơn. Ví dụ: "Giảm tần suất ăn ngoài từ 5 lần/tuần xuống 3 lần/tuần có thể giúp bạn tiết kiệm X tiền".
-        4.  **Dự báo vui:** Dựa trên mức chi tiêu này, đưa ra một dự báo nhỏ, ví dụ: "Nếu tiếp tục đà này, bạn đang đi đúng hướng để đạt mục tiêu Y!" hoặc "Cẩn thận, ví tiền của bạn có thể sẽ 'mỏng' đi vào cuối tháng đấy!".
-
-        Hãy trả lời bằng tiếng Việt và sử dụng định dạng Markdown để dễ đọc (tiêu đề in đậm, gạch đầu dòng).
-
-        Dữ liệu chi tiêu của người dùng:
-        ${JSON.stringify(transactions, null, 2)}
-    `;
-
     try {
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        const text = response.text();
-        aiAnalysisResultEl.innerHTML = text; // Gemini thường trả về Markdown, dùng innerHTML để render cơ bản
+        // Gọi đến Netlify Function của chúng ta
+        const response = await fetch('/.netlify/functions/analyze', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ expenses: transactions }), // Gửi dữ liệu lên cho function
+        });
+        
+        const data = await response.json();
+
+        if (!response.ok) {
+            // Nếu có lỗi từ function, ném lỗi để bắt ở catch
+            throw new Error(data.error || 'Lỗi không xác định từ máy chủ');
+        }
+
+        // Sử dụng một thư viện Markdown (như marked.js) sẽ hiển thị đẹp hơn,
+        // nhưng hiện tại dùng pre-wrap cũng đã đủ tốt.
+        aiAnalysisResultEl.innerHTML = data.analysis.replace(/```/g, ''); // Xóa các dấu ``` nếu có
+
     } catch (error) {
-        console.error("Lỗi gọi API Gemini:", error);
-        aiAnalysisResultEl.innerHTML = '<p style="color: red;">Đã có lỗi xảy ra khi kết nối với AI. Vui lòng thử lại.</p>';
+        console.error("Lỗi khi gọi Netlify Function:", error);
+        aiAnalysisResultEl.innerHTML = `<p style="color: red;">Lỗi: ${error.message}</p>`;
         showNotification('Lỗi phân tích từ AI.', 'error');
     } finally {
         analyzeBtn.disabled = false;
@@ -173,24 +132,16 @@ async function analyzeSpending() {
     }
 }
 
-
 // --- EVENT LISTENERS & INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
     // Tải dữ liệu từ localStorage nếu có
-    const savedApiKey = localStorage.getItem('geminiApiKey');
-    if (savedApiKey) {
-        apiKeyInput.value = savedApiKey;
-        initializeAi();
-    }
-    
-    const savedTransactions = localStorage.getItem('transactions');
+    const savedTransactions = localStorage.getItem('transactions_v2');
     if (savedTransactions) {
         transactions = JSON.parse(savedTransactions);
         renderTransactions();
     }
     
     // Gán sự kiện
-    saveApiKeyBtn.addEventListener('click', initializeAi);
     transactionForm.addEventListener('submit', addTransaction);
     analyzeBtn.addEventListener('click', analyzeSpending);
 });
