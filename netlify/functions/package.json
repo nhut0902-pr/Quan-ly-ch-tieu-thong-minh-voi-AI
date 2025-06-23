@@ -1,0 +1,14 @@
+{
+  "name": "vi-thong-minh-ai",
+  "version": "1.0.0",
+  "description": "Backend function for AI expense tracker",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google/generative-ai": "^0.15.0"
+  }
+}
