@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ví Thông Minh AI - Quản Lý Chi Tiêu</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>Ví Thông Minh AI 🧠💡</h1>
+        <p>Quản lý chi tiêu dễ dàng, tiết kiệm thông minh cùng Trợ lý AI Gemini 1.5 Flash</p>
+    </header>
+
+    <div id="notification" class="notification"></div>
+
+    <div class="api-key-container">
+        <label for="apiKey">Nhập Google AI Gemini API Key của bạn:</label>
+        <div class="api-input-group">
+            <input type="password" id="apiKey" placeholder="Dán API Key vào đây...">
+            <button id="saveApiKeyBtn">Lưu & Khởi tạo</button>
+        </div>
+        <p class="api-note">🔑 API Key của bạn chỉ được lưu trên trình duyệt này. Không an toàn cho môi trường production.</p>
+    </div>
+
+    <main class="dashboard-grid">
+        <!-- CỘT 1: NHẬP LIỆU & GIAO DỊCH -->
+        <section class="card">
+            <h2>Ghi Chép Chi Tiêu</h2>
+            <form id="transactionForm">
+                <input type="number" id="amount" placeholder="Số tiền (VND)" required>
+                <select id="category" required>
+                    <option value="" disabled selected>-- Chọn danh mục --</option>
+                    <option value="Ăn uống">Ăn uống</option>
+                    <option value="Di chuyển">Di chuyển</option>
+                    <option value="Mua sắm">Mua sắm</option>
+                    <option value="Giải trí">Giải trí</option>
+                    <option value="Hóa đơn">Hóa đơn</option>
+                    <option value="Sức khỏe">Sức khỏe</option>
+                    <option value="Khác">Khác</option>
+                </select>
+                <input type="text" id="note" placeholder="Ghi chú (VD: Cà phê với bạn)">
+                <button type="submit">Thêm Giao Dịch</button>
+            </form>
+            <hr>
+            <h3>Giao Dịch Gần Đây</h3>
+            <ul id="transactionList">
+                <!-- Các giao dịch sẽ được thêm vào đây bằng JS -->
+            </ul>
+        </section>
+
+        <!-- CỘT 2: PHÂN TÍCH AI -->
+        <section class="card ai-card">
+            <h2>✨ Trợ Lý Phân Tích AI ✨</h2>
+            <div id="dashboardSummary">
+                <p>Tổng chi tiêu: <strong id="totalSpent">0 VND</strong></p>
+            </div>
+            <button id="analyzeBtn" disabled>Nhờ AI Phân Tích Ngay</button>
+            <div id="aiAnalysisResult" class="ai-result">
+                <p>Thêm vài giao dịch và nhấn nút trên để nhận phân tích và lời khuyên cá nhân hóa từ AI!</p>
+            </div>
+        </section>
+
+        <!-- CỘT 3: CÁC TÍNH NĂNG NÂNG CAO (DEMO) -->
+        <section class="card">
+            <h2>Tính Năng Thông Minh (Demo)</h2>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4>📸 Chụp & Nhập Liệu AI</h4>
+                    <p>Chụp ảnh hóa đơn, AI tự động điền thông tin chi tiêu.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>📧 Quét Hộp Thư Thông Minh</h4>
+                    <p>Tự động ghi nhận chi tiêu từ email hóa đơn, biên nhận.</p>
+                </div>
+                 <div class="feature-item">
+                    <h4>📈 Dự Báo Dòng Tiền AI</h4>
+                    <p>AI dự báo số dư tài khoản của bạn trong 30 ngày tới.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>🤔 Mô Phỏng "Nếu... Thì Sao?"</h4>
+                    <p>Hỏi AI về tác động của các quyết định tài chính lớn.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>💸 Săn Deal Thông Minh</h4>
+                    <p>AI tìm các gói dịch vụ tốt hơn để giúp bạn tiết kiệm.</p>
+                </div>
+                 <div class="feature-item">
+                    <h4>🎮 Thử Thách Tiết Kiệm AI</h4>
+                    <p>Nhận các thử thách tiết kiệm cá nhân hóa và vui vẻ.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Tải thư viện Gemini -->
+    <script type="module" src="script.js"></script>
+</body>
+</html>
