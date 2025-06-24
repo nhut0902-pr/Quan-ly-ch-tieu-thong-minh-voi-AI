@@ -21,6 +21,16 @@
         <!-- CỘT 1: NHẬP LIỆU & GIAO DỊCH -->
         <section class="card">
             <h2>Ghi Chép Chi Tiêu</h2>
+
+            <!-- TÍNH NĂNG UPLOAD HÓA ĐƠN AI -->
+            <div class="upload-section">
+                <label for="receiptUpload" class="upload-label" id="uploadLabel">
+                    📸 Chụp Hóa Đơn AI
+                </label>
+                <input type="file" id="receiptUpload" accept="image/*" style="display: none;">
+                <div class="spinner" id="uploadSpinner" style="display: none;"></div>
+            </div>
+            
             <form id="transactionForm">
                 <input type="number" id="amount" placeholder="Số tiền (VND)" required>
                 <select id="category" required>
@@ -55,26 +65,38 @@
             </div>
         </section>
 
-        <!-- CỘT 3: CÁC TÍNH NĂNG NÂNG CAO (DEMO) -->
+        <!-- CỘT 3: CÁC TÍNH NĂNG NÂNG CAO -->
         <section class="card">
-            <h2>Tính Năng Thông Minh (Sắp ra mắt)</h2>
-            <div class="feature-list">
-                <div class="feature-item">
-                    <h4>📸 Chụp & Nhập Liệu AI</h4>
-                    <p>Chụp ảnh hóa đơn, AI tự động điền thông tin chi tiêu.</p>
+            <h2>🚀 Trung Tâm Tính Năng AI</h2>
+            <div class="feature-hub">
+                
+                <!-- TÍNH NĂNG QUẢN LÝ ĐĂNG KÝ -->
+                <div class="feature-module">
+                    <h4>📅 Quản Lý Đăng Ký</h4>
+                    <ul id="subscriptionList" class="mini-list"></ul>
+                    <p class="subscription-total">Tổng tháng: <strong id="subscriptionTotal">0 VND</strong></p>
+                    <button id="analyzeSubscriptionsBtn" class="btn-purple" style="display: none;">Tối ưu hóa</button>
+                    <div id="subscriptionAdvice" class="ai-result-mini" style="display: none;"></div>
                 </div>
-                <div class="feature-item">
-                    <h4>📧 Quét Hộp Thư Thông Minh</h4>
-                    <p>Tự động ghi nhận chi tiêu từ email hóa đơn, biên nhận.</p>
+
+                <!-- TÍNH NĂNG THỬ THÁCH TIẾT KIỆM -->
+                <div class="feature-module">
+                    <h4>🏆 Thử Thách Tiết Kiệm</h4>
+                    <div id="challengeDisplay" style="display: none;">
+                        <strong id="challengeTitle"></strong>
+                        <p id="challengeDescription"></p>
+                        <p class="savings-highlight">Tiết kiệm: <span id="challengeSavings"></span></p>
+                    </div>
+                    <button id="generateChallengeBtn" class="btn-green">Tạo Thử Thách Cho Tôi!</button>
                 </div>
-                 <div class="feature-item">
-                    <h4>📈 Dự Báo Dòng Tiền AI</h4>
-                    <p>AI dự báo số dư tài khoản của bạn trong 30 ngày tới.</p>
+
+                <!-- TÍNH NĂNG MÔ PHỎNG: DỰ BÁO DÒNG TIỀN -->
+                <div class="feature-module">
+                    <h4>📈 Dự Báo Dòng Tiền (Demo)</h4>
+                    <p class="feature-description">AI sẽ dự đoán số dư tài khoản của bạn trong 30 ngày tới dựa trên thói quen chi tiêu.</p>
+                    <button id="forecastDemoBtn" class="btn-blue">Xem Dự Báo Demo</button>
                 </div>
-                <div class="feature-item">
-                    <h4>💸 Săn Deal Thông Minh</h4>
-                    <p>AI tìm các gói dịch vụ tốt hơn để giúp bạn tiết kiệm.</p>
-                </div>
+
             </div>
         </section>
     </main>
