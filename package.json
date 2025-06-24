@@ -1,7 +1,8 @@
 {
-  "name": "vi-thong-minh-ai-functions",
-  "version": "1.0.0",
+  "name": "vi-thong-minh-ai-fullstack",
+  "version": "2.0.0",
   "dependencies": {
-    "@google/generative-ai": "^0.15.0"
+    "@google/generative-ai": "^0.15.0",
+    "pg": "^8.12.0"
   }
 }
