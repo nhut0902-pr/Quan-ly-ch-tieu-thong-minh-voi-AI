@@ -1,11 +1,6 @@
-# netlify.toml
-
 [build]
-  # Lệnh này chỉ đơn giản là thông báo không cần bước build phức tạp
-  command = "echo 'No build step required'"
-  # Thư mục chứa file index.html để public
+  command = "echo 'Build step complete'"
   publish = "." 
   
 [functions]
-  # Thư mục chứa các file serverless function (backend)
   directory = "netlify/functions"
